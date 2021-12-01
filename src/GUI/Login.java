@@ -268,7 +268,7 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		anchor.getChildren().addAll(userTxt, passwordTxt, login, register, passwordRecover, usernameLabel, exit,
 				loginLabel, passwordLabel);
 		BackgroundImage myBI = new BackgroundImage(new Image(
-				"file:///C:/Users/ojall/git/CIS3270_Final_Project/CIS3270_Final_Project/src/GUI_Design/commercial-airline-pilot.jpg"),
+				"file:///C:/Thushar/College/Fall%202021/Application%20Development/photo-1529074963764-98f45c47344b.jpg"),
 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				BackgroundSize.DEFAULT);
 		anchor.setBackground(new Background(myBI));
