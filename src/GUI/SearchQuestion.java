@@ -14,11 +14,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
-/**
- * @author ojall
- *
- */
-
 public class SearchQuestion extends Application implements EventHandler<ActionEvent> {
 	private ObservableList<ObservableList> data;
 	private String usernameId = "";
