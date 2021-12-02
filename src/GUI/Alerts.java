@@ -9,6 +9,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
+//Are there meant to be quotation marks around title and message or variables that haven't been implemented yet? - Lucas
+
 public class Alerts {
 
 	public static void main(String[] args) {

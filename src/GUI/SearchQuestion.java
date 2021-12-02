@@ -2,7 +2,6 @@ package GUI;
 
 import java.sql.*;
 
-import Objects.Flights.Flight;
 import javafx.application.*;
 import javafx.collections.*;
 import javafx.event.*;
@@ -172,6 +171,9 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		primaryStage.setTitle("Search");
 		AnchorPane anchor = new AnchorPane();
 		anchor.setPadding(new Insets(20, 20, 20, 20));
+		
+		//Do we want flights to hold all the flight information or what does this mean? - Lucas
+		
 		TableView<Flight> table = new TableView<>();
 		final ObservableList<Flight> data = FXCollections.observableArrayList();
 
@@ -183,7 +185,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 
 		Button returnHome = new Button("Return Home");
 		returnHome.setOnAction(e -> {
-			mainPage home = new mainPage();
+			MainPage home = new MainPage();
 			try {
 				home.start(primaryStage);
 			} catch (Exception e1) {

@@ -81,6 +81,9 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 			try {
 				// get a connection to the database
 				Connection myConn = DriverManager.getConnection(
+						
+						//Is this a cloud stored database or a local one? We'll need whoever has database to set this to just localhost - Lucas
+						
 						"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
 						"Tdgiheay12");
 				// create a statement
@@ -127,6 +130,9 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 				 * recovery, or prompts the user to register if they do not have an account
 				 **/
 				else if (count < 1) {
+					
+					//Alertbox isn't showing correctly on my eclipse. Is it a javafx problem or meant to be another class? - Lucas
+					
 					AlertBox.display("Incorrect Log In",
 							"Username and password combination is either incorrect or the account does not exist.\n Please select The forgot password if your password is unknonwn, or the register option to create an account.");
 				}
@@ -268,6 +274,9 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		anchor.getChildren().addAll(userTxt, passwordTxt, login, register, passwordRecover, usernameLabel, exit,
 				loginLabel, passwordLabel);
 		BackgroundImage myBI = new BackgroundImage(new Image(
+				
+				//Change this jpg to something local whoever shows project at final presentation - Lucas
+				
 				"file:///C:/Thushar/College/Fall%202021/Application%20Development/photo-1529074963764-98f45c47344b.jpg"),
 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				BackgroundSize.DEFAULT);

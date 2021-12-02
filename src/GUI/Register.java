@@ -10,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
+//Might not need registration function but it's really impressive so might be worth keeping - Lucas
+
 public class Register extends Application implements EventHandler<ActionEvent> {
 
 	TextField tfName = new TextField();
@@ -189,6 +191,9 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 				if (tPassword.getText().equals((tConfirm.getText())) == false) {
 					AlertBox.display("Error", "Password and Confirm password do not match.");
 				} else {
+					
+					//Are we inserting user info into the flights table too or am i reading this wrong? - Lucas
+					
 					String sql = "INSERT INTO `flights`.`users`"
 							+ "(`firstName`,`lastName`,`address`,`zipcode`,`state`,`username`,`password`,`email`,"
 							+ "`ssn`,`security_question`,`security_answer`,`isAdmin`)VALUES " + "('" + tfName.getText()
