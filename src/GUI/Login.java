@@ -115,7 +115,7 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 				// If user is in the database and the password is correct it it will take user
 				// to main page
 				if (count == 1) {
-					mainPage MainPage = new mainPage();
+					MainPage MainPage = new MainPage();
 					MainPage.start(primaryStage);
 					
 
@@ -191,7 +191,7 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 				// If user is in the database and the password is correct it it will take user
 				// to main page
 				if (count == 1) {
-					mainPage MainPage = new mainPage();
+					MainPage MainPage = new MainPage();
 					MainPage.start(primaryStage);
 					
 
@@ -238,7 +238,7 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		passwordRecover.setPrefHeight(26.0);
 		passwordRecover.setPrefWidth(150.0);
 		passwordRecover.setOnAction(e -> {
-			passwordRecovery recoverPage = new passwordRecovery();
+			PasswordRecovery recoverPage = new PasswordRecovery();
 			try {
 
 				recoverPage.start(primaryStage);
