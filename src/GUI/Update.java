@@ -87,8 +87,7 @@ public class Update extends Application implements EventHandler<ActionEvent> {
 
 					Connection myConn;
 					myConn = DriverManager.getConnection(
-							"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-							"Tdgiheay12");
+							"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 					String update = getOption(dropdown2).trim() + " `flights`.`flight` SET `"
 							+ getChoice(dropdown).trim() + "` = '" + info.getText().trim() + "' WHERE `number` = '"
@@ -158,8 +157,7 @@ public class Update extends Application implements EventHandler<ActionEvent> {
 
 			String dbSearch = getChoice(dropdown).trim();
 			Connection myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 			String sqlUserCheck = "SELECT * FROM flights.flight";
 			// create a statement
 			PreparedStatement myStat = myConn.prepareStatement(sqlUserCheck);

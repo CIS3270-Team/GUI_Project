@@ -55,8 +55,7 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 		try {
 			Connection myConn;
 			myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 			String sqlUserCheck = "SELECT * FROM `flights`.`users` where username = '" + Login.getUser()
 					+ "' and isAdmin = '1'";
@@ -124,8 +123,7 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 			try {
 
 				Connection myConn = DriverManager.getConnection(
-						"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-						"Tdgiheay12");
+						"jdbc:mysql://localhost:3306/sys", "root", "password");
 				String sqlUserCheck = "select  `number`, `airline`, `origin_city`, `destination_city`, `departure_time`, `arrival_time`, `departure_date`, `arrival_date` from\r\n"
 						+ "flights.flight inner Join flights.Flight_User\r\n" + "on Flight_id = flight.id\r\n"
 						+ "inner join flights.users on Flight_User.User_id = users.id where username = '"
@@ -174,8 +172,7 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 		try {
 			Connection myConn;
 			myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 			String sqlUserCheck = "SELECT * FROM `flights`.`users` where username = '" + Login.getUser() + "'";
 			// create a statement
@@ -216,8 +213,7 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 
 				Connection myConn;
 				myConn = DriverManager.getConnection(
-						"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-						"Tdgiheay12");
+						"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 				String sqlFlightDelete = "Delete FROM flights.Flight_User where Flight_User.Flight_id = '"
 						+ deleteFlightTxt.getText().trim() + "' and Flight_User.User_id= '" + getUsernameId() + "'";
@@ -294,8 +290,7 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 
 		try {
 			Connection myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 			String sqlUserCheck = "select  `number`, `airline`, `origin_city`, `destination_city`, `departure_time`, `arrival_time`, `departure_date`, `arrival_date` from\r\n"
 					+ "flights.flight inner Join flights.Flight_User\r\n" + "on Flight_id = flight.id\r\n"
 					+ "inner join flights.users on Flight_User.User_id = users.id where username = '" + Login.getUser()

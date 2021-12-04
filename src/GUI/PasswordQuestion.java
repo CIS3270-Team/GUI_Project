@@ -45,8 +45,7 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 		try {
 			// get a connection to the database
 			Connection myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 			// create a statement
 			Statement myStat = myConn.createStatement();
 			// execute a query
@@ -102,8 +101,7 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 				// get a connection to the database
 				String userAnswer = answerField.getText().trim();
 				Connection myConn = DriverManager.getConnection(
-						"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-						"Tdgiheay12");
+						"jdbc:mysql://localhost:3306/sys", "root", "password");
 				// create a statement
 				Statement myStat = myConn.createStatement();
 				// execute a query

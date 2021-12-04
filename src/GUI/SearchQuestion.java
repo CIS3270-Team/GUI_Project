@@ -232,8 +232,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		try {
 			Connection myConn;
 			myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 			String sqlUserCheck = "SELECT * FROM `flights`.`users` where username = '" + Login.getUser() + "'";
 			// create a statement
@@ -259,8 +258,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		try {
 			Connection myConn;
 			myConn = DriverManager.getConnection(
-					"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-					"Tdgiheay12");
+					"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 			String sqlUserCheck = "SELECT * FROM `flights`.`users` where username = '" + Login.getUser() + "'";
 			// create a statement
@@ -293,8 +291,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 
 				Connection myConn;
 				myConn = DriverManager.getConnection(
-						"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-						"Tdgiheay12");
+						"jdbc:mysql://localhost:3306/sys", "root", "password");
 
 				String sqlFlightBook = "INSERT INTO `flights`.`Flight_User`(`Flight_id`,`User_id`)VALUES("
 						+ addFlight.getText().trim() + ", " + getUsernameId() + ")";
@@ -429,8 +426,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 				String dbSearch = getChoice(dropdown).trim();
 				String searchItem = searchTxt.getText().trim();
 				Connection myConn = DriverManager.getConnection(
-						"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-						"Tdgiheay12");
+						"jdbc:mysql://localhost:3306/sys", "root", "password");
 				String sqlUserCheck = "SELECT * FROM flights.flight WHERE " + dbSearch + " = '" + searchItem + "'";
 				// create a statement
 				PreparedStatement myStat = myConn.prepareStatement(sqlUserCheck);

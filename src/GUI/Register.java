@@ -10,7 +10,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
-//Might not need registration function but it's really impressive so might be worth keeping - Lucas
 
 public class Register extends Application implements EventHandler<ActionEvent> {
 
@@ -204,8 +203,7 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 
 					try {
 						Connection myConn = DriverManager.getConnection(
-								"jdbc:mysql://35.193.248.221:3306/?verifyServerCertificate=false&useSSL=true", "root",
-								"Tdgiheay12");
+								"jdbc:mysql://localhost:3306/sys", "root", "password");
 						// create a statement
 						Statement myStat = myConn.createStatement();
 						myStat.executeUpdate(sql);
