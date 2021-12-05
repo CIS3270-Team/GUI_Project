@@ -182,6 +182,7 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 				myConn = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/sys", "root", "password");
 				String sqlFlightUpdate = "UPDATE flights SET Reservation_ID = NULL WHERE flights.Flight_ID = '" + deleteFlightTxt.getText().trim() + "'";
+				String sqlSeatsUpdate = "UPDATE flights SET Seats_Available = Seats_Available + 1 WHERE flights.Flight_ID = '" + deleteFlightTxt.getText().trim() + "'";
 				String sqlFlightDelete = "DELETE FROM reservation where reservation.Flight_id = '"
 						+ deleteFlights.getText().trim() + "' and reservation.Customer_ID= '" + customer.getCustomer_ID() + "'";
 				String sqlFlightCheck = "SELECT Flight_ID, Customer_ID FROM reservation where Customer_ID = '"
@@ -189,11 +190,14 @@ public class MainPage extends Application implements EventHandler<ActionEvent> {
 				// create a statement
 				PreparedStatement myStats = myConn.prepareStatement(sqlFlightUpdate);
 				myStats.executeUpdate(sqlFlightUpdate);
+				myStats = myConn.prepareStatement(sqlSeatsUpdate);
+				myStats.executeUpdate(sqlSeatsUpdate);
 				PreparedStatement myStat = myConn.prepareStatement(sqlFlightDelete);
 				// execute a query
 				ResultSet myRs;
 				myStat.executeUpdate(sqlFlightDelete);
 				myRs = myStat.executeQuery(sqlFlightCheck);
+				myStats.close();
 				myStat.close();
 				myRs.close();
 				myConn.close();

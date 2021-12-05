@@ -5,7 +5,7 @@ import java.sql.Time;
 
 public class Flight {
 
-	private int Flight_ID;
+	private int Flight_ID, Seats_Available;
 	private String Airline, Arrival_City_ID, Departure_City_ID,Departure_Time, Arrival_Time,Departure_Date, Arrival_Date;
 	
 	public Flight(int int1, String string, String string2, String string3, String string4, String string5, String string6,
@@ -18,6 +18,18 @@ public class Flight {
 		Departure_Time = string5;
 		Arrival_Date = string6;
 		Arrival_Time = string7;
+	}
+	public Flight(int int1, String string, String string2, String string3, String string4, String string5, String string6,
+			String string7, int i) {
+		Flight_ID = int1;
+		Airline = string;
+		Arrival_City_ID = string2;
+		Departure_City_ID = string3;
+		Departure_Date = string4;
+		Departure_Time = string5;
+		Arrival_Date = string6;
+		Arrival_Time = string7;
+		Seats_Available = i;
 	}
 
 	public int getFlight_ID() {
@@ -82,6 +94,14 @@ public class Flight {
 
 	public void setArrival_Time(String arrival_Time) {
 		Arrival_Time = arrival_Time;
+	}
+
+	public int getSeats_Available() {
+		return Seats_Available;
+	}
+
+	public void setSeats_Available(int seats_Available) {
+		Seats_Available = seats_Available;
 	}
 
 }

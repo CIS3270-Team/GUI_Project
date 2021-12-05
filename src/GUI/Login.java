@@ -42,39 +42,39 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 
 		Label loginLabel = new Label("Enter your username and password");
 		loginLabel.setAlignment(javafx.geometry.Pos.CENTER);
-		loginLabel.setLayoutX(144.0);
-		loginLabel.setLayoutY(51.0);
-		loginLabel.setPrefHeight(32.0);
+		loginLabel.setLayoutX(100.0);
+		loginLabel.setLayoutY(30.0);
+		loginLabel.setPrefHeight(31.0);
 		loginLabel.setPrefWidth(351.0);
 		loginLabel.setText("Enter Your Username And Password");
 		loginLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 		loginLabel.setFont(new Font(22.0));
 
 		Label usernameLabel = new Label("Username:");
-		usernameLabel.setLayoutX(189.0);
-		usernameLabel.setLayoutY(131.0);
+		usernameLabel.setLayoutX(150.0);
+		usernameLabel.setLayoutY(90.0);
 		usernameLabel.setText("Username:");
 		usernameLabel.setFont(new Font(20.0));
 
 		TextField userTxt = new TextField();
-		userTxt.setLayoutX(311.0);
-		userTxt.setLayoutY(133.0);
+		userTxt.setLayoutX(250.0);
+		userTxt.setLayoutY(91.0);
 		userTxt.setPromptText("Username");
 
 		Label passwordLabel = new Label("Password:");
-		passwordLabel.setLayoutX(193.0);
-		passwordLabel.setLayoutY(174.0);
+		passwordLabel.setLayoutX(150.0);
+		passwordLabel.setLayoutY(130.0);
 		passwordLabel.setFont(new Font(20.0));
 
 		PasswordField passwordTxt = new PasswordField();
-		passwordTxt.setLayoutX(311.0);
-		passwordTxt.setLayoutY(177.0);
+		passwordTxt.setLayoutX(250.0);
+		passwordTxt.setLayoutY(131.0);
 		passwordTxt.setPromptText("Password");
 
 		// login button and event handler
 		Button login = new Button("Log In");
-		login.setLayoutX(237.0);
-		login.setLayoutY(222.0);
+		login.setLayoutX(250.0);
+		login.setLayoutY(190.0);
 		login.setMnemonicParsing(false);
 		login.setPrefHeight(25.0);
 		login.setPrefWidth(149.0);
@@ -150,8 +150,8 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		});
 
 		Button register = new Button("Register");
-		register.setLayoutX(237.0);
-		register.setLayoutY(255.0);
+		register.setLayoutX(250.0);
+		register.setLayoutY(225.0);
 		register.setMnemonicParsing(false);
 		register.setPrefHeight(25.0);
 		register.setPrefWidth(149.0);
@@ -166,8 +166,8 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		});
 
 		Button passwordRecover = new Button("Forgot Password");
-		passwordRecover.setLayoutX(236.0);
-		passwordRecover.setLayoutY(290.0);
+		passwordRecover.setLayoutX(250.0);
+		passwordRecover.setLayoutY(260.0);
 		passwordRecover.setMnemonicParsing(false);
 		passwordRecover.setPrefHeight(26.0);
 		passwordRecover.setPrefWidth(150.0);
@@ -184,8 +184,8 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		});
 
 		Button exit = new Button("Exit");
-		exit.setLayoutX(236.0);
-		exit.setLayoutY(328.0);
+		exit.setLayoutX(250.0);
+		exit.setLayoutY(295.0);
 		exit.setMnemonicParsing(false);
 		exit.setPrefHeight(25.0);
 		exit.setPrefWidth(150.0);
@@ -204,7 +204,7 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		BackgroundImage myBI = new BackgroundImage(new Image(
 				
 				
-				"file:///C:/Thushar/College/Fall%202021/Application%20Development/photo-1529074963764-98f45c47344b.jpg"),
+				"file:///C:\\Users\\mathm\\Documents\\Background/download.jfif"),
 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				BackgroundSize.DEFAULT);
 		anchor.setBackground(new Background(myBI));

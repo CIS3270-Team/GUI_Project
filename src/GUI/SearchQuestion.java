@@ -1,6 +1,7 @@
 package GUI;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import javafx.application.*;
 import javafx.collections.*;
@@ -171,12 +172,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		
 		//Create the table to see flights list
 		TableView<Flight> table = new TableView<>();
-
-		ChoiceBox<String> dropdown = new ChoiceBox<>();
-		dropdown.getItems().addAll("Destination", "Departure City", "Date", "Airline");
-		dropdown.setValue("");
-		dropdown.setLayoutY(60);
-		dropdown.setLayoutX(340);
+		ArrayList<Integer> array = new ArrayList<>(); 
 
 		Button returnHome = new Button("Return Home");
 		returnHome.setOnAction(e -> {
@@ -215,11 +211,6 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		userId.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
 		userId.setFont(new Font(18.0));
 
-		TextField searchTxt = new TextField();
-		searchTxt.setLayoutX(460.0);
-		searchTxt.setLayoutY(60.0);
-		searchTxt.setMinWidth(250);
-
 		TextField addFlight = new TextField();
 		addFlight.setLayoutX(1200);
 		addFlight.setLayoutY(300);
@@ -241,8 +232,6 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 			while (myRs.next()) {
 				count = count + 1;
 				setUsernameId(myRs.getString("Customer_ID"));
-				System.out.println(customer.getCustomer_ID());
-
 			}
 
 		} catch (Exception exc) {
@@ -267,8 +256,6 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 			while (myRs.next()) {
 				count = count + 1;
 				setUsernameId(myRs.getString("Customer_ID"));
-				System.out.println(customer.getCustomer_ID());
-
 			}
 
 		} catch (Exception exc) {
@@ -290,7 +277,9 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 				
 				String sqlFlightBook = "INSERT INTO reservation VALUES ('" +getNumberOfReservations()+ "', '" +addFlight.getText().trim()+ "', '"+java.time.LocalDate.now()+"', '"+getUsernameId()+"', NULL)";
 				String sqlFlightUpdate = "UPDATE flights SET Reservation_ID = '" +getNumberOfReservations()+ "' WHERE flights.Flight_ID = '" +addFlight.getText().trim()+ "'";
-
+				String sqlSeatsUpdate = "UPDATE flights SET Seats_Available = Seats_Available - 1 WHERE flights.Flight_ID = '" +addFlight.getText().trim()+ "'";
+				String sqlSeatsCheck = "SELECT Seats_Available FROM flights WHERE flights.Flight_ID = '" +addFlight.getText().trim()+ "'";
+				
 				String sqlBookingCheck = "SELECT flights.Flight_ID, Airline, Arrival_City_ID, Departure_City_ID, Departure_Date, Departure_Time, Arrival_Date, Arrival_Time FROM flights, reservation WHERE flights.Reservation_ID = reservation.Reservation_ID AND reservation.Customer_ID = '" + customer.getCustomer_ID() + "'";
 
 				String bookingCheckValue = "SELECT Departure_Date, Departure_Time FROM flights WHERE flights.Flight_ID ='"
@@ -298,12 +287,22 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 				
 				// create a statement
 				Statement myStat = myConn.createStatement();
+				Statement mySeats = myConn.createStatement();
 				// execute a query
 				ResultSet myRs;
-				System.out.println("BYE");
+				ResultSet myR = mySeats.executeQuery(sqlSeatsCheck);
 				myStat.executeUpdate(sqlFlightBook);
-				System.out.println("HEY");
 				myStat.executeUpdate(sqlFlightUpdate);
+
+				while (myR.next()) {
+					array.add(myR.getInt("Seats_Available"));
+				}
+				if (array.get(0) == 0) {
+					setCountHolder(1);
+				}
+				myR.close();
+				mySeats.close();
+				myStat.executeUpdate(sqlSeatsUpdate);
 
 				// Creates a variable for future checking
 				int count = 0;
@@ -397,21 +396,23 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		TableColumn<Flight, String> column8 = new TableColumn<>("Arrival Time");
 		column8.setCellValueFactory(new PropertyValueFactory<>("Arrival_Time"));
 		column8.setMinWidth(128.88);
+		
+		TableColumn<Flight, Integer> column9 = new TableColumn<>("Seats Available");
+		column9.setCellValueFactory(new PropertyValueFactory<>("Seats_Available"));
+		column9.setMinWidth(128.88);
 
 		table.setTableMenuButtonVisible(false);
 
 		Button searchButton = new Button("Search");
-		searchButton.setLayoutX(715);
+		searchButton.setLayoutX(500);
 		searchButton.setLayoutY(60.0);
 		searchButton.setMinWidth(60);
 		searchButton.setOnAction(e -> {
 			try {
 
-				String dbSearch = getChoice(dropdown).trim();
-				String searchItem = searchTxt.getText().trim();
 				Connection myConn = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/sys", "root", "password");
-				String sqlUserCheck = "SELECT * FROM flights "/* WHERE '" +dbSearch+"' = '" +searchItem+"'*/;
+				String sqlUserCheck = "SELECT * FROM flights ";
 				// create a statement
 				PreparedStatement myStat = myConn.prepareStatement(sqlUserCheck);
 				// execute a query
@@ -426,7 +427,7 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 					table.getItems().add(new Flight(myRs.getInt("Flight_ID"), myRs.getString("Airline"), myRs.getString("Arrival_City_ID"),
 							myRs.getString("Departure_City_ID"), myRs.getString("Departure_Date"),
 							myRs.getString("Departure_Time"), myRs.getString("Arrival_Date"),
-							myRs.getString("Arrival_Time")));
+							myRs.getString("Arrival_Time"),myRs.getInt("Seats_Available")));
 				}
 				myStat.close();
 				myRs.close();
@@ -441,8 +442,8 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 		table.setLayoutX(20);
 		table.setMinWidth(1160);
 		table.setMinHeight(580);
-		table.getColumns().addAll(column1, column2, column3, column4, column5, column6, column7, column8);
-		anchor.getChildren().addAll(dropdown, userId, searchTxt, searchButton, table, returnHome, logOut, addFlight,
+		table.getColumns().addAll(column1, column2, column3, column4, column5, column6, column7, column8, column9);
+		anchor.getChildren().addAll(userId, searchButton, table, returnHome, logOut, addFlight,
 				addFlightLbl, addFlightBtn);
 		Scene scene = new Scene(anchor, 1300, 700);
 
@@ -463,28 +464,6 @@ public class SearchQuestion extends Application implements EventHandler<ActionEv
 	@Override
 	public void handle(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
-	}
-
-	public String getChoice(ChoiceBox<String> dropdown) {
-
-		String dbSearch = "";
-		String choice = dropdown.getValue();
-		Connection myConn;
-			if (choice.equals("Destination")) {
-				dbSearch = "Departure_City_ID";
-			}
-			else if (choice.equals("Departure City")) {
-				dbSearch = "Arrival_City_ID";
-			} else if (choice.equals("Date")) {
-				dbSearch = "Departure_Date";
-			} else if (choice.equals("Airline")) {
-				dbSearch = "Airline";
-			}
-			System.out.println(dbSearch);
-			return dbSearch;
-
-		
 
 	}
 
