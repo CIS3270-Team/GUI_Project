@@ -11,8 +11,10 @@ import javafx.stage.*;
 
 public class PasswordRecovery extends Application implements EventHandler<ActionEvent> {
 
-	public static String user = "";
-
+	
+	public static void setCustomer(Customer customer) {
+		Login.customer = customer;
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -23,6 +25,8 @@ public class PasswordRecovery extends Application implements EventHandler<Action
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		Customer customer = Login.getCustomer();
+		
 		primaryStage.setTitle("Recover Password");
 		primaryStage.setResizable(false);
 		GridPane grid = new GridPane();
@@ -53,20 +57,19 @@ public class PasswordRecovery extends Application implements EventHandler<Action
 				Connection myConn = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/sys", "root", "password");
 				// create a statement
-				Statement myStat = myConn.createStatement();
+				customer.setUser(username.getText().trim());
+				PreparedStatement myStat = myConn.prepareStatement("SELECT Username FROM customer WHERE Username = '" + customer.getUser() + "'");
 				// execute a query
 				ResultSet myRs;
-				user = username.getText().trim();
-				String sqlUserCheck = "SELECT `username` FROM `flights`.`users` where username = '" + user + "'";
-				myRs = myStat.executeQuery(sqlUserCheck);
-
+				myRs = myStat.executeQuery();
+				System.out.println("WE MADE IT ");
 				// Creates a variable for future checking
 				int count = 0;
 
 				while (myRs.next()) {
 
 					count = count + 1;
-
+					System.out.println("Check");
 				}
 				myRs.close();
 				myStat.close();
@@ -76,17 +79,17 @@ public class PasswordRecovery extends Application implements EventHandler<Action
 				// to main page
 				if (count == 1) {
 
-					recoveryQuestion recoveryPage = new recoveryQuestion();
+					PasswordQuestion recoveryPage = new PasswordQuestion();
 					try {
 
 						recoveryPage.start(primaryStage);
 					} catch (Exception e1) {
-
+						System.out.println("MEEP");
 					}
 				}
 
 				else {
-					AlertBox.display("Incorrect Username", "There is no user with the username: " + user);
+					
 
 				}
 

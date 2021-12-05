@@ -12,14 +12,13 @@ import javafx.stage.*;
 
 public class PasswordQuestion extends Application implements EventHandler<ActionEvent> {
 
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 		launch(args);
 
 	}
-
-	String user = PasswordRecovery.user;
 
 	String secQuest = "";
 	// string to hold security question answer once received from database
@@ -34,10 +33,11 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		Customer customer = Login.getCustomer();
+		
 		primaryStage.setTitle("Security Question");
 		primaryStage.setResizable(false);
 		GridPane grid = new GridPane();
-		// grid.setGridLinesVisible(true);
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(10);
 		grid.setHgap(10);
@@ -50,7 +50,7 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 			Statement myStat = myConn.createStatement();
 			// execute a query
 			ResultSet myRs;
-			String sqlUserCheck = "SELECT `security_question` FROM `flights`.`users` where username = '" + user + "'";
+			String sqlUserCheck = "SELECT Security_Question FROM customer where username = '" + customer.getUser() + "'";
 			myRs = myStat.executeQuery(sqlUserCheck);
 
 			// Creates a variable for future checking
@@ -60,13 +60,13 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 
 				count += 1;
 
-				secQuest = myRs.getString("security_question");
+				secQuest = myRs.getString("Security_Question");
 
 				// sets security answer from database to be compared to user answer
-				secAnswer = myRs.getString("security_answer");
+				secAnswer = myRs.getString("Security_Answer");
 
 				// stores password from database
-				password = myRs.getString("password");
+				password = myRs.getString("Password");
 			}
 			myStat.close();
 			myRs.close();
@@ -106,7 +106,7 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 				Statement myStat = myConn.createStatement();
 				// execute a query
 				ResultSet myRs;
-				String sqlUserCheck = "SELECT * FROM `flights`.`users` where username = '" + user + "'";
+				String sqlUserCheck = "SELECT * FROM customer WHERE Username = '" + customer.getUser() + "'";
 				myRs = myStat.executeQuery(sqlUserCheck);
 
 				// Creates a variable for future checking
@@ -117,10 +117,9 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 					count += 1;
 
 					// sets security answer from database to be compared to user answer
-					secAnswer = myRs.getString("security_answer");
-
+					secAnswer = myRs.getString("Security Answer");
 					// stores password from database
-					password = myRs.getString("password");
+					password = myRs.getString("Password");
 				}
 
 				myRs.close();
@@ -128,11 +127,13 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 				myConn.close();
 				// If user is in the database and the password is correct it it will take user
 				// to main page
-				if (count == 1 && userAnswer.equals(secAnswer)) {
-					AlertBox.display("Password", "The password for your account is: " + password);
+				if (userAnswer.equals(secAnswer)) {
+					
+					PasswordReset resetPage = new PasswordReset();
+					resetPage.start(primaryStage);
 
 				} else if (count == 1 && secAnswer != userAnswer) {
-					AlertBox.display("Incorrect Answer", "That answer is incotrrect. Please try again.");
+					
 				}
 
 			}
@@ -143,12 +144,12 @@ public class PasswordQuestion extends Application implements EventHandler<Action
 
 		});
 
-		Button cancel = new Button("cancel");
+		Button cancel = new Button("Cancel");
 		GridPane.setConstraints(cancel, 1, 3);
 		GridPane.setHalignment(cancel, HPos.RIGHT);
 		cancel.setOnAction(e -> {
 			{
-				passwordRecovery recoverPage = new passwordRecovery();
+				PasswordRecovery recoverPage = new PasswordRecovery();
 				try {
 
 					recoverPage.start(primaryStage);

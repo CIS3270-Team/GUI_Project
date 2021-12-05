@@ -12,23 +12,13 @@ import javafx.scene.text.*;
 import javafx.stage.*;
 
 public class Login extends Application implements EventHandler<ActionEvent> {
-	private static String user = "";
-	private static String password = "";
+	static Customer customer;
 
-	public static String getUser() {
-		return user;
+	public static void setCustomer(Customer customer) {
+		Login.customer = customer;
 	}
-
-	public static void setUser(String user) {
-		Login.user = user;
-	}
-
-	public static String getPassword() {
-		return password;
-	}
-
-	public static void setPassword(String password) {
-		Login.password = password;
+	public static Customer getCustomer() {
+		return customer;
 	}
 
 	public static Scene scene;
@@ -41,7 +31,10 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 	}
 
 	public void start(Stage primaryStage) throws Exception {
-
+		
+		Customer customer = new Customer();
+		setCustomer(customer);
+		
 		primaryStage.setTitle("Log In");
 		primaryStage.setResizable(false);
 		AnchorPane anchor = new AnchorPane();
@@ -77,69 +70,6 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		passwordTxt.setLayoutX(311.0);
 		passwordTxt.setLayoutY(177.0);
 		passwordTxt.setPromptText("Password");
-		passwordTxt.setOnAction(e -> {// Exception handling for connecting to the database
-			try {
-				// get a connection to the database
-				Connection myConn = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/sys", "root", "password");
-				// create a statement
-				Statement myStat = myConn.createStatement();
-				// execute a query
-				ResultSet myRs;
-
-				// collects user name from the user name text field and assigns to a string
-				// called user
-				setUser(userTxt.getText().trim());
-
-				// Collects password from the password text field and assigns to a string called
-				// password
-				setPassword(passwordTxt.getText().trim());
-
-				// SQL query to check if user name and password is in database
-				String sqlUserCheck = "SELECT `username`, `id` FROM `flights`.`users` where username = '" + getUser()
-						+ "' and password = '" + getPassword() + "'";
-				myRs = myStat.executeQuery(sqlUserCheck);
-
-				// Creates a variable for future checking
-				int count = 0;
-
-				// While loop that will determine if user is in the database
-				while (myRs.next()) {
-					count = count + 1;
-
-				}
-				myStat.close();
-				myRs.close();
-				myConn.close();
-				// If user is in the database and the password is correct it it will take user
-				// to main page
-				if (count == 1) {
-					MainPage MainPage = new MainPage();
-					MainPage.start(primaryStage);
-					
-
-				}
-
-				/**
-				 * If user is not in database or password is incorrect, an error message is
-				 * displayed prompting change in user name or password, attempt password
-				 * recovery, or prompts the user to register if they do not have an account
-				 **/
-				else if (count < 1) {
-					
-					//Alertbox isn't showing correctly on my eclipse. Is it a javafx problem or meant to be another class? - Lucas
-					
-					AlertBox.display("Incorrect Log In",
-							"Username and password combination is either incorrect or the account does not exist.\n Please select The forgot password if your password is unknonwn, or the register option to create an account.");
-				}
-
-			}
-
-			catch (Exception ex) {
-
-			}
-
-		});
 
 		// login button and event handler
 		Button login = new Button("Log In");
@@ -158,23 +88,22 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 				Connection myConn = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/sys", "root", "password");
 				// create a statement
-				Statement myStat = myConn.createStatement();
+				PreparedStatement myStat = myConn.prepareStatement("SELECT username, password FROM customer WHERE username = '" + customer.getUser() 
+					+ "' and password = '" + customer.getPassword() + "'");
 				// execute a query
 				ResultSet myRs;
 
 				// collects user name from the user name text field and assigns to a string
 				// called user
-				setUser(userTxt.getText().trim());
+				customer.setUser(userTxt.getText().trim());
 
 				// Collects password from the password text field and assigns to a string called
 				// password
-				setPassword(passwordTxt.getText().trim());
-
+				customer.setPassword(passwordTxt.getText().trim());
+				
 				// SQL query to check if user name and password is in database
-				String sqlUserCheck = "SELECT `username` FROM `flights`.`users` where username = '" + getUser()
-						+ "' and password = '" + getPassword() + "'";
-				myRs = myStat.executeQuery(sqlUserCheck);
-
+				myRs = myStat.executeQuery();
+				
 				// Creates a variable for future checking
 				int count = 0;
 
@@ -184,7 +113,14 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 					count = count + 1;
 
 				}
-
+				
+				PreparedStatement getID = myConn.prepareStatement("SELECT Customer_ID FROM customer WHERE username = '" + customer.getUser() + "'");
+				myRs = getID.executeQuery();
+				
+				while (myRs.next()) {
+					customer.setCustomer_ID("Customer_ID");
+				}
+				
 				myRs.close();
 				myStat.close();
 				myConn.close();
@@ -194,18 +130,15 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 				if (count == 1) {
 					MainPage MainPage = new MainPage();
 					MainPage.start(primaryStage);
-					
+					send(customer);
 
 				}
 
 				/**
-				 * If user is not in database or password is incorrect, an error message is
-				 * displayed prompting change in user name or password, attempt password
-				 * recovery, or prompts the user to register if they do not have an account
+				 * If user is not in database or password is incorrect, nothing happens
 				 **/
 				else if (count < 1) {
-					AlertBox.display("Incorrect Log In",
-							"Username and password combination is either incorrect or the account does not exist.\n Please select The 'Forgot Password' option if your password is unknonwn, \n or the register option to create an account.");
+					
 				}
 
 			}
@@ -257,7 +190,7 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		exit.setPrefHeight(25.0);
 		exit.setPrefWidth(150.0);
 		exit.setOnAction(e -> {
-			AlertBox.display("Exit", "System Will Now exit.");
+			//AlertBox.display("Exit", "System Will Now exit.");
 			System.exit(0);
 		});
 
@@ -270,7 +203,6 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 				loginLabel, passwordLabel);
 		BackgroundImage myBI = new BackgroundImage(new Image(
 				
-				//Change this jpg to something local whoever shows project at final presentation - Lucas
 				
 				"file:///C:/Thushar/College/Fall%202021/Application%20Development/photo-1529074963764-98f45c47344b.jpg"),
 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -282,7 +214,11 @@ public class Login extends Application implements EventHandler<ActionEvent> {
 		primaryStage.show();
 		primaryStage.centerOnScreen();
 	}
-
+	
+	public Customer send(Customer customer) {
+		return customer;
+	}
+	
 	@Override
 	public void handle(ActionEvent event) {
 		// TODO Auto-generated method stub

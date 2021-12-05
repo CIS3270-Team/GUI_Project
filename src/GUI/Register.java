@@ -20,7 +20,7 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 	TextField tState = new TextField();
 	TextField tUserName = new TextField();
 	TextField tEmail = new TextField();
-	TextField tSSN = new TextField();
+	//TextField tSSN = new TextField();
 	TextField tSecutiryQ = new TextField();
 	TextField tSecutiryA = new TextField();
 	PasswordField tPassword = new PasswordField();
@@ -84,11 +84,11 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 		stateLbl.setText("State");
 		stateLbl.setFont(new Font(20.0));
 
-		Label userLbl = new Label();
-		userLbl.setLayoutX(174.0);
-		userLbl.setLayoutY(256.0);
-		userLbl.setText("Username");
-		userLbl.setFont(new Font(20.0));
+		Label usernameLbl = new Label();
+		usernameLbl.setLayoutX(174.0);
+		usernameLbl.setLayoutY(256.0);
+		usernameLbl.setText("Username");
+		usernameLbl.setFont(new Font(20.0));
 
 		Label passLbl = new Label();
 		passLbl.setLayoutX(177.0);
@@ -108,11 +108,6 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 		emailLbl.setText("Email");
 		emailLbl.setFont(new Font(20.0));
 
-		Label ssnLbl = new Label();
-		ssnLbl.setLayoutX(222.0);
-		ssnLbl.setLayoutY(392.0);
-		ssnLbl.setText("SSN");
-		ssnLbl.setFont(new Font(20.0));
 
 		Label secQLbl = new Label();
 		secQLbl.setLayoutX(105.0);
@@ -154,10 +149,6 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 		tEmail.setLayoutY(364.0);
 		tEmail.setPromptText("Example@example.com");
 
-		tSSN.setLayoutX(274.0);
-		tSSN.setLayoutY(402.0);
-		tSSN.setPromptText("###-##-####");
-
 		tSecutiryQ.setLayoutX(274.0);
 		tSecutiryQ.setLayoutY(436.0);
 		tSecutiryQ.setPromptText("Security Question");
@@ -182,34 +173,36 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 		button.setText("Register");
 		button.setOnAction(e -> {
 			if (tfName.getText().isEmpty() || tlName.getText().isEmpty() || tUserName.getText().isEmpty()
-					|| tPassword.getText().isEmpty() || tEmail.getText().isEmpty() || tSSN.getText().isEmpty()
-					|| tSecutiryQ.getText().isEmpty() || tSecutiryA.getText().isEmpty()) {
-				AlertBox.display("Error!", "Please fill out all the required field and submit.");
-				// lError.setStyle("-fx-font-size:15; -fx-text-fill: red;");
+					|| tPassword.getText().isEmpty() || tEmail.getText().isEmpty() || tSecutiryQ.getText().isEmpty() || tSecutiryA.getText().isEmpty()) {
+				
 			} else {
 				if (tPassword.getText().equals((tConfirm.getText())) == false) {
-					AlertBox.display("Error", "Password and Confirm password do not match.");
+					
 				} else {
 					
-					//Are we inserting user info into the flights table too or am i reading this wrong? - Lucas
 					
-					String sql = "INSERT INTO `flights`.`users`"
-							+ "(`firstName`,`lastName`,`address`,`zipcode`,`state`,`username`,`password`,`email`,"
-							+ "`ssn`,`security_question`,`security_answer`,`isAdmin`)VALUES " + "('" + tfName.getText()
-							+ "', '" + tlName.getText() + "', '" + tAddress.getText() + "', '" + tZip.getText() + "', '"
-							+ tState.getText() + "', '" + tUserName.getText() + "', '" + tPassword.getText() + "', '"
-							+ tEmail.getText() + "', '" + tSSN.getText() + "', '" + tSecutiryQ.getText() + "', '"
-							+ tSecutiryA.getText() + "', '0')";
 
 					try {
 						Connection myConn = DriverManager.getConnection(
 								"jdbc:mysql://localhost:3306/sys", "root", "password");
 						// create a statement
-						Statement myStat = myConn.createStatement();
-						myStat.executeUpdate(sql);
+						int count = 0;
+						PreparedStatement checkQuery = myConn.prepareStatement("SELECT * FROM customer");
+						System.out.println("Checking query");
+						ResultSet check = checkQuery.executeQuery();
+						System.out.println("Queried");
+						while (check.next()) {
+							count++;
+							System.out.println("Counting");
+						}
+						String countNew = String.valueOf(count);
+						
+						PreparedStatement myStat = myConn.prepareStatement("INSERT INTO customer VALUES ('" + countNew + "', '" + tfName.getText() + "', '" + tlName.getText() + "', '" + tAddress.getText() + "', '" + tZip.getText() + "', '" + tState.getText() + "', '" + tUserName.getText() + "', '" + tPassword.getText() + "', '" + tEmail.getText() + "', '" + tSecutiryQ.getText() + "', '" + tSecutiryA.getText() + "')");
+						System.out.println("Prepared");
+						myStat.executeUpdate();
+						System.out.println("Jobs done");
 
-						AlertBox.display("Sucess", "A new user inserted successfully.");
-						// lError.setStyle("-fx-font-size:15; -fx-text-fill: green;");
+						
 
 						Thread.sleep(3000);
 
@@ -221,9 +214,7 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 							e1.printStackTrace();
 						}
 					} catch (SQLException | InterruptedException e1) {
-						AlertBox.display("Error", "A new user insert failed. \nThe user name " + tUserName.getText()
-								+ " is not available.");
-						// lError.setStyle("-fx-font-size:15; -fx-text-fill: red;");
+						
 						System.out.println(e1.getMessage());
 					}
 
@@ -251,9 +242,9 @@ public class Register extends Application implements EventHandler<ActionEvent> {
 		Title.setText("Register User");
 		Title.setFont(new Font(24.0));
 
-		anchor.getChildren().addAll(firstNameLbl,lastNameLbl,addressLbl,zipLbl, stateLbl,userLbl,passLbl,
-				pconfirmPassLbl, emailLbl,ssnLbl,secQLbl,secALbl,tfName, tlName, tAddress, tZip, tState,tUserName,
-				tEmail, tSSN, tSecutiryQ, tSecutiryA, tPassword, tConfirm, button, button0, Title);
+		anchor.getChildren().addAll(firstNameLbl,lastNameLbl,addressLbl,zipLbl, stateLbl,usernameLbl,passLbl,
+				pconfirmPassLbl, emailLbl,secQLbl,secALbl,tfName, tlName, tAddress, tZip, tState,tUserName,
+				tEmail, tSecutiryQ, tSecutiryA, tPassword, tConfirm, button, button0, Title);
 		
 		
 		Scene scene = new Scene(anchor, 613, 612);
